@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-from login import *
-from user import *
+from components.login import *
+from components.user import *
 
 
 def main():
