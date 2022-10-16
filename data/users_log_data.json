@@ -1,0 +1,15 @@
+{
+    "data": [
+        {
+            "key": "nam",
+            "info": {
+                "fullname": "nam",
+                "email": "nam",
+                "password": "nam",
+                "phone": "123",
+                "dob": "2022-10-16",
+                "storage": "25c958e7-5565-4293-bd2a-900f5ec9e3fa"
+            }
+        }
+    ]
+}

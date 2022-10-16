@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
 
 from components.login import *
 from components.user import *
@@ -22,13 +21,11 @@ def main():
     
     root.title('Lab1')
     ###
+
     mainframe = tk.Frame(root, name='mainframe', width=window_width, height=window_height)
 
     ### MAIN ###
     log = login_page(mainframe)
-    # if log:
-    #     print('yes')
-    #     userPage(mainframe)
 
     root.mainloop()
 
