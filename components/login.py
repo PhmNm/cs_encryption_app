@@ -6,7 +6,7 @@ import json, os, sys
 import uuid
 import datetime
 
-from components.user import *
+from components.user import User, user_page
 
 window_height = 400
 window_width = 600
@@ -15,7 +15,8 @@ window_width = 600
 def login_page(mainframe: tk.Frame):
     loginframe = tk.Frame(mainframe, name='loginframe', width=window_width, height=window_height)
     try:
-        mainframe.children['registerframe'].forget()
+        for frame in mainframe.children.values():
+            frame.forget()
     except:
         mainframe.children['loginframe'].pack(fill="both", expand=1)
 
@@ -66,7 +67,7 @@ def login_page(mainframe: tk.Frame):
                 if i['key'] == email:
                     if i['info']['password'] == password:
                         user = User(i)
-                        userPage(mainframe, user)
+                        user_page(mainframe, user)
                         success = True
 
             print("Email entered: ", email)
@@ -85,7 +86,12 @@ def login_page(mainframe: tk.Frame):
 def signup_page(mainframe: tk.Frame):
     registerframe = tk.Frame(mainframe, name='registerframe', width=window_width, height=window_height)
 
-    mainframe.children['loginframe'].forget()
+    try:
+        for frame in mainframe.children.values():
+            frame.forget()
+    except:
+        mainframe.children['registerframe'].pack(fill="both", expand=1)
+    # mainframe.children['loginframe'].forget()
     mainframe.children['registerframe'].pack(fill="both", expand=1)
 
     registerframe = mainframe.children['registerframe']

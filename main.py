@@ -1,7 +1,7 @@
 import tkinter as tk
 
-from components.login import *
-from components.user import *
+from components.login import login_page
+# from components.user import *
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
     y = (hs-window_height)/2
 
     root.geometry("%dx%d+%d+%d" % (window_width, window_height, x, y))
-    root.resizable(0, 0)
+    root.resizable(False, False)
     
     root.title('Lab1')
     ###
