@@ -2,9 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 
 import os
-# from components.login import login_page
 
-# import hashlib
+import hashlib
 
 window_height = 400
 window_width = 600

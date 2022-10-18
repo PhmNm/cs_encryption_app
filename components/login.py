@@ -7,6 +7,9 @@ import uuid
 import datetime
 
 from components.user import User, user_page
+from Crypto.PublicKey import RSA 
+import pyaes, pbkdf2, binascii, os, secrets
+
 
 window_height = 400
 window_width = 600
@@ -174,6 +177,13 @@ def signup_page(mainframe: tk.Frame):
             if email in [i['key'] for i in users['data']]:
                 messagebox.showerror(message='Email đã tồn tại')
             else:
+
+                keyPair = RSA.generate(2048)
+                Kpublic = keyPair.publickey().export_key()
+                Kprivate = keyPair.export_key()
+                Ksecret = password
+                key = pbkdf2.PBKDF2(Kprivate, Ksecret).read(32)
+                ##print('AES encryption key:', binascii.hexlify(key))
                 storage_name = str(uuid.uuid4())
                 while os.path.exists('data/'+ storage_name):
                     storage_name = str(uuid.uuid4())
@@ -186,7 +196,9 @@ def signup_page(mainframe: tk.Frame):
                         'password': password,
                         'phone': phone_entry_rg.get().strip(),
                         'dob': str(dob_entry_rg.get_date()),
-                        'storage': storage_name
+                        'storage': storage_name,
+                        'Kprivate': binascii.hexlify(key),
+                        'Kpublic': Kpublic
                     }
                 }
                 users['data'].append(user)
