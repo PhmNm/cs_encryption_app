@@ -1,7 +1,6 @@
 import tkinter as tk
 
 from components.login import login_page
-# from components.user import *
 
 
 def main():

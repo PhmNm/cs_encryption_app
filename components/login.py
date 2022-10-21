@@ -157,6 +157,8 @@ def signup_page(mainframe: tk.Frame):
         email, password = '',''
         email = email_entry_rg.get().strip()
         password = password_entry_rg.get().strip()
+        confirmpass = confirmpass_entry_rg.get().strip()
+
         print("Fullname entered: ", fullname_entry_rg.get().strip())
         print("Email entered: ", email_entry_rg.get().strip())
         print("Password entered: ", password_entry_rg.get().strip())
@@ -173,6 +175,8 @@ def signup_page(mainframe: tk.Frame):
         if email and password: # check valid input data
             if email in [i['key'] for i in users['data']]:
                 messagebox.showerror(message='Email đã tồn tại')
+            elif confirmpass != password:
+                messagebox.showerror(message='Nhập lại mật khẩu sai')
             else:
                 storage_name = str(uuid.uuid4())
                 while os.path.exists('data/'+ storage_name):

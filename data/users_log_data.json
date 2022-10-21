@@ -6,9 +6,19 @@
                 "fullname": "nam",
                 "email": "nam",
                 "password": "nam",
-                "phone": "123",
-                "dob": "2022-10-16",
-                "storage": "25c958e7-5565-4293-bd2a-900f5ec9e3fa"
+                "phone": "11111",
+                "dob": "2022-10-16"
+            }
+        },
+        {
+            "key": "nghia@",
+            "info": {
+                "fullname": "nghia",
+                "email": "nghia@",
+                "password": "nghia",
+                "phone": "321",
+                "dob": "2022-10-18",
+                "storage": "ca6116de-92e5-45ca-b612-d06a60aad4ae"
             }
         }
     ]
