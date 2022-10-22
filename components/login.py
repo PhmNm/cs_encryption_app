@@ -2,18 +2,24 @@ import tkinter as tk
 from tkinter import messagebox
 from tkcalendar import DateEntry
 
-import json, os, sys
+import json, os
 import uuid
 import datetime
 
 from components.user import User, user_page
+from components.utils import *
 
 window_height = 400
 window_width = 600
 
 
 def login_page(mainframe: tk.Frame):
-    loginframe = tk.Frame(mainframe, name='loginframe', width=window_width, height=window_height)
+    loginframe = tk.Frame(
+        mainframe,
+        name='loginframe',
+        width=window_width,
+        height=window_height
+    )
     try:
         for frame in mainframe.children.values():
             frame.forget()
@@ -23,23 +29,46 @@ def login_page(mainframe: tk.Frame):
     loginframe = mainframe.children['loginframe']
     login_contentframe = tk.Frame(loginframe, padx=130, pady=10)
 
-    login_label = tk.Label(login_contentframe, text='USER LOGIN',
-                        font=('', 24, 'bold'), padx=5, pady=20, width=10)
+    login_label = tk.Label(
+        login_contentframe,
+        text='USER LOGIN',
+        font=('', 24, 'bold'),
+        padx=5,
+        pady=20,
+        width=10
+    )
 
-    email_label = tk.Label(login_contentframe, text='Email:', 
-                            font=('Verdana',14))
-    password_label = tk.Label(login_contentframe, text='Password:', 
-                            font=('Verdana',14))
+    email_label = tk.Label(
+        login_contentframe,
+        text='Email:', 
+        font=('Verdana',14)
+    )
+    password_label = tk.Label(
+        login_contentframe,
+        text='Password:', 
+        font=('Verdana',14)
+    )
 
     email_entry = tk.Entry(login_contentframe, font=('Verdana',14))
     password_entry = tk.Entry(login_contentframe, font=('Verdana',14), show='*')
 
-    login_button = tk.Button(login_contentframe,text="Login", font=('Verdana',10),
-                            bg='#2980b9',fg='#fff', padx=10, pady=10, width=8)
+    login_button = tk.Button(
+        login_contentframe,
+        text="Login",
+        font=('Verdana',10),
+        bg='#2980b9',
+        fg='#fff',
+        padx=10,
+        pady=10,
+        width=8
+    )
 
-    go_register_label = tk.Label(login_contentframe, 
-                        text="Don't have an account? Create one" , 
-                        font=('Verdana',10), fg='red')
+    go_register_label = tk.Label(
+        login_contentframe, 
+        text="Don't have an account? Create one", 
+        font=('Verdana',10),
+        fg='red'
+    )
 
     mainframe.pack(fill='both', expand=1)
     loginframe.pack(fill='both', expand=1)
@@ -53,7 +82,7 @@ def login_page(mainframe: tk.Frame):
     password_label.grid(row=2, column=0, pady=10)
     password_entry.grid(row=2, column=1)
 
-    def validateLogin(): #handle click
+    def validate_login(): #handle click
         users = dict()
         success = False
         if os.path.exists('data/users_log_data.json'):
@@ -65,10 +94,12 @@ def login_page(mainframe: tk.Frame):
 
             for i in users['data']:
                 if i['key'] == email:
-                    if i['info']['password'] == password:
+                    from_dir = i['info']['password']
+                    if validate_password(password, from_dir):
                         user = User(i)
                         user_page(mainframe, user)
                         success = True
+                        break
 
             print("Email entered: ", email)
             print("Password entered: ", password)
@@ -77,14 +108,20 @@ def login_page(mainframe: tk.Frame):
             login_page(mainframe)
         
     login_button.grid(row=3, column=0, columnspan=2, pady=30)
-    login_button.bind('<Return>', (lambda event: validateLogin))
-    login_button['command'] = validateLogin
+    login_button.bind("<Return>", (lambda e: validate_login))
+    login_button['command'] = validate_login
     
     go_register_label.grid(row=4, column=0, columnspan=3, pady=20)
 
     go_register_label.bind("<Button-1>", lambda page: signup_page(mainframe))
+
 def signup_page(mainframe: tk.Frame):
-    registerframe = tk.Frame(mainframe, name='registerframe', width=window_width, height=window_height)
+    registerframe = tk.Frame(
+        mainframe,
+        name='registerframe',
+        width=window_width,
+        height=window_height
+    )
 
     try:
         for frame in mainframe.children.values():
@@ -97,39 +134,99 @@ def signup_page(mainframe: tk.Frame):
     registerframe = mainframe.children['registerframe']
     register_contentframe = tk.Frame(registerframe, padx=130, pady=15)
 
-    signup_label = tk.Label(register_contentframe, text='USER SIGN UP',
-                    font=('', 24, 'bold'), padx=20, pady=5, width=15)
-    fullname_label_rg = tk.Label(register_contentframe, text='Họ và tên:', 
-                                font=('Verdana',12))
-    email_label_rg = tk.Label(register_contentframe, text='Email:', 
-                                font=('Verdana',12))
-    password_label_rg = tk.Label(register_contentframe, text='Password:', 
-                                font=('Verdana',12))
-    confirmpass_label_rg = tk.Label(register_contentframe, text='Re-Password:', 
-                                    font=('Verdana',12))
-    phone_label_rg = tk.Label(register_contentframe, text='SĐT:', 
-                            font=('Verdana',12))
-    dob_label_rg = tk.Label(register_contentframe, text='Ngày sinh:', 
-                            font=('Verdana',12))
+    signup_label = tk.Label(
+        register_contentframe,
+        text='USER SIGN UP',
+        font=('', 24, 'bold'),
+        padx=20,
+        pady=5,
+        width=15
+    )
+    fullname_label_rg = tk.Label(
+        register_contentframe,
+        text='Họ và tên:', 
+        font=('Verdana',12)
+    )
+    email_label_rg = tk.Label(
+        register_contentframe,
+        text='Email:', 
+        font=('Verdana',12)
+    )
+    password_label_rg = tk.Label(
+        register_contentframe,
+        text='Password:', 
+        font=('Verdana',12)
+    )
+    confirmpass_label_rg = tk.Label(
+        register_contentframe,
+        text='Re-Password:', 
+        font=('Verdana',12)
+    )
+    phone_label_rg = tk.Label(
+        register_contentframe,
+        text='SĐT:', 
+        font=('Verdana',12)
+    )
+    dob_label_rg = tk.Label(
+        register_contentframe,
+        text='Ngày sinh:', 
+        font=('Verdana',12)
+    )
 
 
-    fullname_entry_rg = tk.Entry(register_contentframe, font=('Verdana',12), width=22)
-    email_entry_rg = tk.Entry(register_contentframe, font=('Verdana',12), width=22)
-    password_entry_rg = tk.Entry(register_contentframe, font=('Verdana',12), width=22, 
-                                show='*')
-    confirmpass_entry_rg = tk.Entry(register_contentframe, font=('Verdana',12), width=22, 
-                                    show='*')
-    phone_entry_rg = tk.Entry(register_contentframe, font=('Verdana',12), width=22)
+    fullname_entry_rg = tk.Entry(
+        register_contentframe,
+        font=('Verdana',12),
+        width=22
+    )
+    email_entry_rg = tk.Entry(
+        register_contentframe,
+        font=('Verdana',12),
+        width=22
+    )
+    password_entry_rg = tk.Entry(
+        register_contentframe,
+        font=('Verdana',12),
+        width=22, 
+        show='*'
+    )
+    confirmpass_entry_rg = tk.Entry(
+        register_contentframe,
+        font=('Verdana',12),
+        width=22, 
+        show='*'
+    )
+    phone_entry_rg = tk.Entry(
+        register_contentframe,
+        font=('Verdana',12),
+        width=22
+    )
     now = datetime.datetime.now()
-    dob_entry_rg = DateEntry(register_contentframe, width=34,
-                            year=now.year, month=now.month, day=now.day)
+    dob_entry_rg = DateEntry(
+        register_contentframe,
+        width=34,
+        date_pattern='dd/mm/yyyy',
+        year=now.year,
+        month=now.month,
+        day=now.day
+    )
 
-    register_button = tk.Button(register_contentframe,text="Register", font=('Verdana',14)
-                                , bg='#2980b9',fg='#fff', padx=25, pady=10, width=25)
+    register_button = tk.Button(
+        register_contentframe,
+        text="Register",
+        font=('Verdana',14),
+        bg='#2980b9',
+        fg='#fff',
+        padx=25,
+        pady=10,
+        width=25
+    )
 
-    go_login_label = tk.Label(register_contentframe, 
-                            text="Already have an account? Sign in" , 
-                            font=('Verdana',10), fg='red')
+    go_login_label = tk.Label(
+        register_contentframe, 
+        text="Already have an account? Sign in" , 
+        font=('Verdana',10),fg='red'
+    )
 
     register_contentframe.pack(fill='both', expand=1)
     
@@ -153,7 +250,7 @@ def signup_page(mainframe: tk.Frame):
     dob_label_rg.grid(row=6, column=0, pady=5, sticky='e')
     dob_entry_rg.grid(row=6, column=1)
     
-    def validateSignup(): #handle click
+    def validate_signup(): #handle click
         email, password = '',''
         email = email_entry_rg.get().strip()
         password = password_entry_rg.get().strip()
@@ -182,12 +279,14 @@ def signup_page(mainframe: tk.Frame):
                 while os.path.exists('data/'+ storage_name):
                     storage_name = str(uuid.uuid4())
                 os.mkdir('data/' + storage_name)
+                # generate salt
+                hashed_password = hash_password(password)
                 user ={
                     'key': email,
                     'info':{
                         'fullname':fullname_entry_rg.get().strip(),
                         'email': email,
-                        'password': password,
+                        'password': hashed_password,
                         'phone': phone_entry_rg.get().strip(),
                         'dob': str(dob_entry_rg.get_date()),
                         'storage': storage_name
@@ -203,7 +302,7 @@ def signup_page(mainframe: tk.Frame):
 
 
     register_button.grid(row=7, column=0, columnspan=2, pady=10)
-    register_button['command'] = validateSignup
+    register_button['command'] = validate_signup
 
     go_login_label.grid(row=8, column=0, columnspan=3)
 
