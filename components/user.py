@@ -447,6 +447,9 @@ def user_page(mainframe: tk.Frame, user: User):
         user_dir = 'data/' + user.storage
 
         forget_old_widgets(user_page_content_frame_right)
+        if user_page_content_frame_right.children:
+            for i in user_page_content_frame_right.children.values():
+                print(i)
 
         file_choose_label = tk.Label(
             user_page_content_frame_right,
