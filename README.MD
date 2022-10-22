@@ -29,3 +29,5 @@ or
 ```terminal
 python3 main.py
 ```
+
+or double click to [main.py](/main.py) file

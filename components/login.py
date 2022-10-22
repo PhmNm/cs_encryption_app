@@ -264,6 +264,8 @@ def signup_page(mainframe: tk.Frame):
         print("Date of birth enterd: ", dob_entry_rg.get_date())
 
         users = dict()
+        if not os.path.exists('data/'):
+            os.mkdir('data/')
         if os.path.exists('data/users_log_data.json'):
             with open('data/users_log_data.json', 'r', encoding='utf-8') as input:
                 users  = json.load(input)

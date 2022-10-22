@@ -51,10 +51,9 @@ def decrypt_Kprivate(encrypted_text, password_hex):
 
 def forget_old_widgets(frame: tk.Frame):
     if frame.children:
-        while frame.children.values():
-            widget = list(frame.children.values())[0]
-            widget.destroy()
-            
+        for name, widget in list(frame.children.items()):
+            if name != 'loginframe':
+                widget.destroy()
     
 def get_user(user_key):
     users = dict()
